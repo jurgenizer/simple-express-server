@@ -15,6 +15,18 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about', { name: 'Jurgen' })
   })
+
+// Create a download view
+app.get('/downloads', (req, res) => res.download('./downloads/document.pdf', 'user-facing-filename.pdf', (err) => {
+    if (err) {
+      //handle error
+      return
+    } else {
+      //do something
+    }
+  })
+)
+
 // Named parameters
 app.get('/uppercase/:theValue', (req, res) => res.send(req.params.theValue.toUpperCase()))
 
