@@ -1,11 +1,24 @@
 const express = require('express');
-const app = express();
 const cookieParser = require('cookie-parser');
+const session = require('express-session')
 
-app.set('view engine', 'pug');
+const app = express();
+app.use(express.urlencoded({
+    extended: true
+  }));
+
+app.use(session({
+    'secret': 'A1B1C00DEFGHIJKLMNOPQRST'
+  }))
 app.use(express.static('public'));
+app.set('view engine', 'pug');
+
 
 app.get('/', (req, res) => {
+
+//req.session.name = 'Jurgen'
+//console.log(req.session.name) // 'Jurgen'
+
     console.log(req.headers)
     res.send('Hello World!');
 
@@ -36,6 +49,23 @@ app.get('/uppercase/:theValue', (req, res) => res.send(req.params.theValue.toUpp
 
 // Cookie parser middleware
 app.use(cookieParser());
+
+
+// Validate form input
+app.post('/form', [
+    check('name').isLength({ min: 3 }),
+    check('email').isEmail(),
+    check('age').isNumeric()
+  ], (req, res) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() })
+    }
+  
+    const name  = req.body.name
+    const email = req.body.email
+    const age   = req.body.age
+  })
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
