@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
+
 app.set('view engine', 'pug');
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     console.log(req.headers)
