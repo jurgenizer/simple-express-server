@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
 app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
@@ -17,7 +18,10 @@ app.get('/uppercase/:theValue', (req, res) => res.send(req.params.theValue.toUpp
 
 // Use a regular expression to match a path
 // will match /post, /post/first, /thepost, /posting/something, etc.
-app.get(/post/, (req, res) => { /* */ })
+// app.get(/post/, (req, res) => { /* */ })
+
+// Cookie parser middleware
+app.use(cookieParser());
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
